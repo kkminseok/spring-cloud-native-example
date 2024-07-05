@@ -24,8 +24,8 @@ jobs:
           path: "${{ github.workflow }}"
           fail-build: false
           severity-cutoff: high
-          acc-report-enable: true
-      - name: Upload unlnerability report
+          acs-report-enable: true
+      - name: Upload vulnerability report
         uses: github/codeql-action/upload-sarif@v2
         if: success() || failure()
         with:
