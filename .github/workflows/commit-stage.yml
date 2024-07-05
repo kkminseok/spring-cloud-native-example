@@ -3,6 +3,9 @@ on: push
 
 jobs:
   build:
+    env:
+      catalog-directory: catalog-service
+
     name: Build and Test
     runs-on: ubuntu-22.04
     permissions:
@@ -34,3 +37,4 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew build
+        working-directory: ${{env.catalog-directory}}
