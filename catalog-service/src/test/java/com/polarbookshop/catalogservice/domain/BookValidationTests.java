@@ -26,4 +26,12 @@ class BookValidationTests {
         Set<ConstraintViolation<Book>> constraintViolations = validator.validate(book);
         assertThat(constraintViolations).isEmpty();
     }
+
+    @Test
+    void whenIsbnDefinedButIncorrectThenValidationFails() {
+        var book = new Book("a2345768", "title", "author", 9.98);
+        Set<ConstraintViolation<Book>> violations = validator.validate(book);
+        assertThat(violations).hasSize(1);
+        assertThat(violations.iterator().next().getMessage()).isEqualTo("The ISBN format must be valid");
+    }
 }
