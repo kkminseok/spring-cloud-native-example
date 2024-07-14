@@ -1,5 +1,5 @@
 http POST :9001/books author="Lyra Silverstar" \
-> title="Northern Lights" isbn="1234567891" price=9.98
+title="Northern Lights" isbn="1234567891" price=9.98
 
 HTTP/1.1 201
 Connection: keep-alive
