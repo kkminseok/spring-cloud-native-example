@@ -75,7 +75,11 @@ jobs:
           image: ${{ env.REGISTRY }}//${{ env.IMAGE_NAME }}:${{ env.VERSION }}
           fail-build: false
           severity-cutoff: high
-      - name: Upload vulnerability repoty
+      - name: Debug SARIF output
+        run: |
+          echo "SARIF file path: ${{ steps.scan.outputs.sarif }}"
+          cat "${{ steps.scan.outputs.sarif }}"
+      - name: Upload vulnerability repote
         uses: github/codeql-action/upload-sarif@v3
         if: success() || failure()
         with:
