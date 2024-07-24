@@ -1,4 +1,4 @@
-name: Commit Stage
+name: Catalog Commit Stage
 on: push
 
 env:
