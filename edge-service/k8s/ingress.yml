@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1 # Ingress Version
+kind: Ingress # Type
+metadata:
+  name: polar-ingress # Ingress Name
+spec:
+  ingressClassName: nginx # Ingress Controller
+  rules:
+    - http: # Http Rule
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: edge-service # 트래픽을 전달할 서비스 객체 이름
+                port:
+                  number: 80 # 트래픽을 전달할 서비스의 포트 정보

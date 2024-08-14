@@ -1,16 +1,16 @@
-name: Order Service Commit stage
+name: Edge Service Commit Stage
 on: push
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: kkminseok/order-service
+  IMAGE_NAME: kkminseok/config-service
   VERSION: latest
 
 
 jobs:
   build:
     env:
-      order-directory: order-service
+      config-directory: config-service
 
     name: Build and Test
     runs-on: ubuntu-22.04
@@ -43,7 +43,7 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew build
-        working-directory: ${{env.order-directory}}
+        working-directory: ${{env.catalog-directory}}
       - name: Setup tools
         uses: alexellis/setup-arkade@v3
       - name: Install tools
@@ -52,7 +52,7 @@ jobs:
           kubeconform: latest
       - name: Validate Kubernetes manifests
         run: |
-          kubeconform --strict catalog-service/k8s
+          kubeconform --strict config-service/k8s
   package:
     name: Package and Publish
     if: ${{ github.ref == 'refs/heads/main' }}
@@ -73,7 +73,7 @@ jobs:
           cache: gradle
       - name: Build container image
         run: |
-          cd order-service
+          cd config-service
           chmod +x gradlew
           ./gradlew bootBuildImage \
             --imageName ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION }}
