@@ -1,6 +1,5 @@
 package com.nhn.corp.ext.orderservice.order.web;
 
-import com.nhn.corp.ext.orderservice.config.PolarProperties;
 import com.nhn.corp.ext.orderservice.order.domain.Order;
 import com.nhn.corp.ext.orderservice.order.domain.OrderService;
 import jakarta.validation.Valid;
@@ -13,11 +12,9 @@ import reactor.core.publisher.Mono;
 public class OrderController {
 
     private final OrderService orderService;
-    private final PolarProperties polarProperties;
 
-    public OrderController(OrderService orderService, PolarProperties polarProperties) {
+    public OrderController(OrderService orderService) {
         this.orderService = orderService;
-        this.polarProperties = polarProperties;
     }
 
     @GetMapping
@@ -30,8 +27,4 @@ public class OrderController {
         return orderService.submitOrder(orderRequest.isbn(), orderRequest.quantity());
     }
 
-    @GetMapping("/test")
-    public String configTest(){
-        return polarProperties.getGreeting();
-    }
 }
