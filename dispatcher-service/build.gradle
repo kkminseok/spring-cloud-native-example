@@ -25,18 +25,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
 	//implementation 'org.springframework.cloud:spring-cloud-function-context'
 	implementation 'org.springframework.cloud:spring-cloud-stream-binder-rabbit'
+	implementation 'org.springframework.cloud:spring-cloud-starter-config'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
 	testImplementation("org.springframework.cloud:spring-cloud-stream")
 	testImplementation("org.springframework.cloud:spring-cloud-stream-test-binder")
-//			{
-//		artifact {
-//			name = "spring-cloud-stream"
-//			extension = "jar"
-//			type ="test-jar"
-//			classifier = "test-binder"
-//		}
-//	}
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
@@ -49,3 +42,25 @@ dependencyManagement {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+
+tasks.named('bootBuildImage') {
+	if (System.getProperty("os.arch").toLowerCase().startsWith('aarch')) {
+		builder = "ghcr.io/thomasvitale/builder-arm:tiny"
+	}
+	builder = "paketobuildpacks/builder:tiny"
+}
+
+bootBuildImage {
+	imageName = "${project.name}"
+	environment = ["BP_JVM_VERSION": "17.*"]
+
+	docker {
+		publishRegistry {
+			username = project.findProperty("registryUsername")
+			password = project.findProperty("registryToken")
+			url = project.findProperty("registryUrl")
+		}
+	}
+}
+
