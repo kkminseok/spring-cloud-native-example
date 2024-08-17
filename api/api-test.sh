@@ -19,3 +19,14 @@ Transfer-Encoding: chunked
 
 http POST :9001/books author="Jon Snow" title="" isbn="123ABC4562" price=9.98
 http POST :9002/orders isbn=123456891 quantity=3
+
+
+# Chapter 10 message order test
+
+http POST :9001/books author="kms" \
+title="Rabbit MQ Message Test" isbn="1234567896" \
+price=9.90 publisher="minseok-kang"
+
+http POST :9002/orders isbn=1234567896 quantity=3
+
+http :9002/orders

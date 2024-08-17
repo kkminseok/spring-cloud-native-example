@@ -40,7 +40,5 @@ public class FunctionsStreamIntegrationTests {
         assertThat(objectMapper.readValue(output.receive().getPayload(), OrderDispatchedMessage.class))
                 .isEqualTo(expectedOutputMessage.getPayload());
 
-        System.out.println("Success!");
-
     }
 }
