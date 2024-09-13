@@ -12,7 +12,6 @@ spring:
     timeout-per-shutdown-phase: 15s
   config:
     import: "optional:configserver:"
-
   session:
     store-type: redis
     timeout: 10m
@@ -45,6 +44,10 @@ spring:
             - name: CircuitBreaker
               args:
                 name: orderCircuitBreaker
+        - id: spa-route
+          uri: ${SPA_URL:http://localhost:9004}
+          predicates:
+            - Path=/,/*.css,/*.js,/favicon.ico
       default-filters:
         - SaveSession
         - name: Retry
@@ -75,6 +78,17 @@ spring:
         initial-interval: 1000
         max-interval: 1000
         multiplier: 1.1
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: edge-service
+            client-secret: polar-keycloak-secret
+            scope: openid
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8080/realms/PolarBookshop
 
   data:
     redis:
