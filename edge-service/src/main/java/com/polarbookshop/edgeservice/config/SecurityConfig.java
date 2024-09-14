@@ -2,6 +2,8 @@ package com.polarbookshop.edgeservice.config;
 
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.oauth2.client.web.server.ServerOAuth2AuthorizedClientRepository;
+import org.springframework.security.oauth2.client.web.server.WebSessionServerOAuth2AuthorizedClientRepository;
 import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers;
 import reactor.core.publisher.Mono;
 
@@ -44,6 +46,11 @@ public class SecurityConfig {
         var oidcLogoutSuccessHandler = new OidcClientInitiatedServerLogoutSuccessHandler(clientRegistrationRepository);
         oidcLogoutSuccessHandler.setPostLogoutRedirectUri("{baseUrl}"); // OIDC 공급자(키클록)에서 로그아웃 후 사용자를 스프링에서 동적으로 지정하는 애플리케이션 베이스 URL로 리다이렉션한다. 로컬=localhost:9000
         return oidcLogoutSuccessHandler;
+    }
+
+    @Bean
+    ServerOAuth2AuthorizedClientRepository auth2AuthorizedClientRepository(){
+        return new WebSessionServerOAuth2AuthorizedClientRepository();
     }
 
 
