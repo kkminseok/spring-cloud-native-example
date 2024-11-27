@@ -1,11 +1,15 @@
 package com.nhn.corp.ext.orderservice.order.web;
 
+import com.nhn.corp.ext.orderservice.config.SecurityConfig;
 import com.nhn.corp.ext.orderservice.order.domain.Order;
 import com.nhn.corp.ext.orderservice.order.domain.OrderService;
 import com.nhn.corp.ext.orderservice.order.domain.OrderStatus;
 import org.junit.jupiter.api.Test;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.context.annotation.Import;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers;
 import reactor.core.publisher.Mono;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
 @WebFluxTest(OrderController.class)
+@Import(SecurityConfig.class)
 class OrderControllerWebFluxTests {
 
     @Autowired
@@ -33,6 +38,8 @@ class OrderControllerWebFluxTests {
                 .willReturn(Mono.just(expectedOrder));
 
         webClient
+                .mutateWith(SecurityMockServerConfigurers.mockJwt()
+                        .authorities(new SimpleGrantedAuthority("ROLE_customer")))
                 .post()
                 .uri("/orders")
                 .bodyValue(orderRequest)

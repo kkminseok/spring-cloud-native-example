@@ -71,6 +71,7 @@ public class SecurityConfig {
                         System.out.println("CSRF Token Value: " + csrfToken.getToken());
                     });
                 }
+                System.out.println(exchange.getRequest().getURI());
 
                 return csrfTokenMono != null ? csrfTokenMono.then() : Mono.empty();
             }));
