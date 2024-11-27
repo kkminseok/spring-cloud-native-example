@@ -1,6 +1,8 @@
 name: Edge Service Commit Stage
-on: push
-
+on:
+  push:
+    branches:
+      - 'main'
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: kkminseok/edge-service

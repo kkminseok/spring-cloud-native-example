@@ -1,5 +1,8 @@
 name: Order Service Commit stage
-on: push
+on:
+  push:
+    branches:
+      - 'main'
 
 env:
   REGISTRY: ghcr.io
