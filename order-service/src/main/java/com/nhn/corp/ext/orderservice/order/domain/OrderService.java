@@ -56,6 +56,10 @@ public class OrderService {
         log.info("Result of sending data for order with id : {} :{}",order.id(), result);
     }
 
+    public Flux<Order> getAllOrders(String userId) {
+        return orderRepository.findAllByCreatedBy(userId);
+    }
+
     public static Order buildAcceptedOrder(Book book, int quantity) {
         return Order.of(book.isbn(), book.title() + "-" + book.author(),
                 book.price(), quantity, OrderStatus.ACCEPTED);
@@ -75,6 +79,8 @@ public class OrderService {
                 OrderStatus.DISPATCHED,
                 existOrder.createdDate(),
                 existOrder.lastModifiedDate(),
+                existOrder.createdBy(),
+                existOrder.lastModifiedBy(),
                 existOrder.version()
         );
     }
