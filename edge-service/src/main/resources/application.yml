@@ -114,5 +114,26 @@ resilience4j:
         timeoutDuration: 5s # 타임아웃 설정 (초)
 
 logging:
+  group:
+    circuitbreaker: io.github.resilience4j, org.springframework.cloud.circuitbreaker
   level:
+    circuitbreaker: info
     io.github.resilience4j: DEBUG
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health
+  endpoint:
+    health:
+      show-details: always
+      shwo-components: always
+      probes:
+        enabled: true
+      group:
+        readiness:
+          include: readinessState,redis
+

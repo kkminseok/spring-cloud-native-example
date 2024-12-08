@@ -3,8 +3,8 @@ WORKDIR workspace
 LABEL authors="kms"
 
 ARG JAR_FILE=build/libs/*.jar
-COPY ${JAR_FILE} catalog-service.jar
-RUN java -Djarmode=layertools -jar catalog-service.jar extract
+COPY ${JAR_FILE} edge-service.jar
+RUN java -Djarmode=layertools -jar edge-service.jar extract
 
 FROM eclipse-temurin:17
 RUN useradd spring
@@ -15,4 +15,4 @@ COPY --from=builder workspace/spring-boot-loader/ ./
 COPY --from=builder workspace/snapshot-dependencies/ ./
 COPY --from=builder workspace/application/ ./
 
-ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]
+ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]

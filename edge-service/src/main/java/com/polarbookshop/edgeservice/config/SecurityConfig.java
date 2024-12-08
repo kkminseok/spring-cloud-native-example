@@ -30,6 +30,7 @@ public class SecurityConfig {
     SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http, ReactiveClientRegistrationRepository clientRegistrationRepository) {
         return http
                 .authorizeExchange(exchange -> exchange
+                        .pathMatchers("/actuator/**").permitAll()
                         .pathMatchers("/","/*.css","/*.js","favicon.ico").permitAll()
                         .pathMatchers(HttpMethod.GET,"/books/**").permitAll()
                         .anyExchange().authenticated()) // 모든 요청에 대해 인증이 이뤄져야함.
