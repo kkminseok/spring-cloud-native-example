@@ -3,11 +3,15 @@ on:
   push:
     branches:
       - 'main'
+  pull_request:
+    branches:
+      - 'main'
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: kkminseok/config-service
   VERSION: latest
+
 
 jobs:
   build:
@@ -28,6 +32,13 @@ jobs:
           distribution: temurin
           java-version: 17
           cache: gradle
+
+      - name: Build, unit tests and integrations tests
+        run: |
+          chmod +x gradlew
+          ./gradlew build
+        working-directory: ${{env.config-directory}}
+
       - name: Code vulnerability scanning
         uses: anchore/scan-action@v3
         id: scan
@@ -41,20 +52,17 @@ jobs:
         if: success() || failure()
         with:
           sarif_file: ${{ steps.scan.outputs.sarif }}
-      - name: Build, unit tests and integrations tests
-        run: |
-          chmod +x gradlew
-          ./gradlew build
-        working-directory: ${{env.config-directory}}
+
       - name: Setup tools
         uses: alexellis/setup-arkade@v3
       - name: Install tools
         uses: alexellis/arkade-get@master
         with:
           kubeconform: latest
+          kustomize: latest
       - name: Validate Kubernetes manifests
         run: |
-          kubeconform --strict catalog-service/k8s
+          kustomize build k8s | kubeconform --strict -
   package:
     name: Package and Publish
     if: ${{ github.ref == 'refs/heads/main' }}
