@@ -1,19 +1,17 @@
-name: Edge Commit Stage
+name: Dispatcher Commit Stage
 on:
   push:
     branches:
       - 'main'
-
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: kkminseok/edge-service
+  IMAGE_NAME: kkminseok/dispatcher-service
   VERSION: latest
-
 
 jobs:
   build:
     env:
-      edge-directory: edge-service
+      dispatcher-directory: dispatcher-service
 
     name: Build and Test
     runs-on: ubuntu-22.04
@@ -34,7 +32,7 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew build
-        working-directory: ${{env.edge-directory}}
+        working-directory: ${{env.dispatcher-directory}}
 
       - name: Code vulnerability scanning
         uses: anchore/scan-action@v3
@@ -80,7 +78,7 @@ jobs:
           cache: gradle
       - name: Build container image
         run: |
-          cd edge-service
+          cd dispatcher-service
           chmod +x gradlew
           ./gradlew bootBuildImage \
             --imageName ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION }}
