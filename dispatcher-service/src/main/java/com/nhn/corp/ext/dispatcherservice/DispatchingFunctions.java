@@ -25,7 +25,7 @@ public class DispatchingFunctions {
     @Bean
     public Function<Flux<Long>, Flux<OrderDispatchedMessage>> label() {
         return orderFlux -> orderFlux.map(orderId -> {
-            log.info("라벨링이 완료되었습니다. 주문 Id: {}", orderId);
+            log.info("라벨링이 완료되었습니다. 주문 Id:{}", orderId);
             return new OrderDispatchedMessage(orderId);
         });
     }

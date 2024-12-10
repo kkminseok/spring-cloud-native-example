@@ -9,7 +9,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: kkminseok/catalog-service
-  VERSION: latest
+  VERSION: ${{ github.sha }}
 
 
 jobs:
